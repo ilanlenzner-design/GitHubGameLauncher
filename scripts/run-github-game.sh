@@ -57,6 +57,13 @@ echo ""
 if [ -d "$TARGET_DIR" ]; then
     echo -e "${BLUE}Repository already exists. Pulling latest changes...${NC}"
     cd "$TARGET_DIR"
+
+    # Stash any local changes to avoid conflicts
+    if ! git diff-index --quiet HEAD --; then
+        echo -e "${BLUE}Stashing local changes...${NC}"
+        git stash push -m "Auto-stash before game launch $(date)"
+    fi
+
     git fetch origin
     git checkout "$BRANCH"
     git pull origin "$BRANCH"
