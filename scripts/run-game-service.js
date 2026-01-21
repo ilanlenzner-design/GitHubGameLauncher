@@ -3,7 +3,6 @@
 const http = require('http');
 const { exec } = require('child_process');
 const url = require('url');
-const { spawn } = require('child_process');
 
 const PORT = 3001;
 const GAME_PORT = 3000;
@@ -27,14 +26,8 @@ const server = http.createServer((req, res) => {
 
         console.log(`\n🎮 Launching game: ${gameUrl}`);
 
-        // Execute the run-github-game script - reuse existing Terminal window
-        const command = `osascript -e 'tell application "Terminal"
-            if (count of windows) > 0 then
-                do script "cd ~ && ~/run-github-game.sh '"'"'${gameUrl}'"'"'" in front window
-            else
-                do script "cd ~ && ~/run-github-game.sh '"'"'${gameUrl}'"'"'"
-            end if
-        end tell'`;
+        // Execute the run-github-game script in a new Terminal window
+        const command = `osascript -e 'tell application "Terminal" to do script "cd ~ && ~/run-github-game.sh '${gameUrl}'"'`;
 
         exec(command, (error) => {
             if (error) {
@@ -71,7 +64,7 @@ const server = http.createServer((req, res) => {
                 <body style="font-family: sans-serif; max-width: 600px; margin: 50px auto; padding: 20px;">
                     <h1>🎮 Play Game Launcher Service</h1>
                     <p>✅ Service is running on port ${PORT}</p>
-                    <p>Use the bookmarklet on GitHub pages to launch games!</p>
+                    <p>Use the Chrome extension on GitHub pages to launch games!</p>
                     <p><strong>Status:</strong> Ready</p>
                 </body>
             </html>
@@ -85,8 +78,8 @@ const server = http.createServer((req, res) => {
 server.listen(PORT, () => {
     console.log(`\n🚀 Play Game Launcher Service running on http://localhost:${PORT}`);
     console.log(`\n📖 Instructions:`);
-    console.log(`   1. Open: ~/Desktop/INSTALL-BOOKMARKLET.html`);
-    console.log(`   2. Drag the bookmarklet to your bookmarks bar`);
-    console.log(`   3. Go to any GitHub repo and click the bookmarklet`);
+    console.log(`   1. Install the Chrome extension from ~/game-launcher-extension`);
+    console.log(`   2. Go to any GitHub repo and click the extension`);
+    console.log(`   3. Click "Launch Game"`);
     console.log(`\n✋ Press Ctrl+C to stop the service\n`);
 });
