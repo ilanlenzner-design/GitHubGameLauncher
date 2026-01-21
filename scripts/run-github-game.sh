@@ -9,6 +9,7 @@ set -e
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 RED='\033[0;31m'
+YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # Check if URL is provided
@@ -80,6 +81,15 @@ fi
 echo ""
 echo -e "${BLUE}Installing dependencies...${NC}"
 npm install
+
+# Kill any existing process on port 3000
+echo ""
+PORT_PID=$(lsof -ti:3000 2>/dev/null || true)
+if [ ! -z "$PORT_PID" ]; then
+    echo -e "${YELLOW}Stopping existing game server on port 3000...${NC}"
+    kill -9 $PORT_PID 2>/dev/null || true
+    sleep 1
+fi
 
 echo ""
 echo -e "${GREEN}========================================${NC}"
