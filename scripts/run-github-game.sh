@@ -190,12 +190,8 @@ echo -e "${GREEN}  Starting game server...${NC}"
 echo -e "${GREEN}========================================${NC}"
 echo ""
 echo -e "${GREEN}Game will be available at:${NC} http://localhost:3000"
-echo -e "${GREEN}Opening browser...${NC}"
 echo -e "${GREEN}Press Ctrl+C to stop the server${NC}"
 echo ""
 
-# Open browser after a short delay (in background)
-(sleep 3 && open http://localhost:3000) &
-
-# Run the dev server
+# Run the dev server (it will auto-open the browser)
 npm run dev
