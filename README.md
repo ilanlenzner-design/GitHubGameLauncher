@@ -1,216 +1,138 @@
-# 🎮 GitHub Game Launcher
+# 🎮 GitHub Game Launcher for Mac
 
-Launch GitHub-hosted games locally with one click! Perfect for testing and playing games directly from GitHub repositories.
+Launch GitHub games locally with one click!
 
-![GitHub Game Launcher](https://img.shields.io/badge/platform-macOS-lightgrey)
-![License](https://img.shields.io/badge/license-MIT-blue)
+## What's Included:
 
-## ✨ Features
+- ✅ **Command-line tool** (`run-game`)
+- ✅ **Desktop app** (GameLauncher.app)
+- ✅ **Chrome extension** (one-click from GitHub)
+- ✅ **Background service** (for Chrome extension)
 
-- 🚀 **One-click launch** from any GitHub repository page
-- 🎯 **Chrome Extension** - Launch directly from GitHub in your browser
-- 💻 **Desktop App** - Simple drag-and-drop interface
-- ⌨️ **Command Line** - For power users
-- 🔄 **Smart waiting** - Opens browser only when webpack compilation is complete
-- 🔒 **Works with private repos** - Uses your GitHub authentication
-- 📦 **Easy distribution** - Installable `.pkg` for macOS
+## Installation:
 
-## 🎥 Demo
+### Option 1: Use the Installer Package (Recommended)
 
-The launcher automatically:
-1. Clones the repository (or updates if already cloned)
-2. Installs dependencies
-3. Starts the dev server
-4. Opens the game in your browser when ready
+1. Double-click `GitHubGameLauncher.pkg`
+2. Follow the installation wizard
+3. Enter your password when prompted
+4. Done!
 
-## 📦 Installation
+### Option 2: Manual Installation
 
-### Prerequisites
-
-- macOS (10.10+)
-- [GitHub CLI](https://cli.github.com/) (`brew install gh`)
-- Node.js (for npm dependencies)
-- Chrome browser (for the extension)
-
-### Quick Install
-
-Download the latest [GitHubGameLauncher.pkg](https://github.com/ilanlenzner-design/GitHubGameLauncher/releases) and double-click to install.
-
-### Manual Installation
-
-```bash
-# Clone the repository
-git clone https://github.com/ilanlenzner-design/GitHubGameLauncher.git
-cd GitHubGameLauncher
-
-# Install scripts
-cp scripts/run-github-game.sh ~/run-github-game.sh
-cp scripts/run-game-service.js ~/run-game-service.js
-chmod +x ~/run-github-game.sh
-chmod +x ~/run-game-service.js
-
-# Add alias to .zshrc
-echo "alias run-game='~/run-github-game.sh'" >> ~/.zshrc
-source ~/.zshrc
-```
-
-## 🚀 Usage
-
-### Method 1: Chrome Extension (Recommended)
-
-1. **Install the extension:**
-   - Open Chrome and go to `chrome://extensions/`
-   - Enable **Developer mode**
-   - Click **Load unpacked**
-   - Select the `chrome-extension` folder
-
-2. **Start the background service:**
+1. Copy files to your system:
    ```bash
-   node ~/run-game-service.js
+   sudo cp payload/usr/local/bin/* /usr/local/bin/
+   sudo cp -r payload/Applications/GameLauncher.app /Applications/
    ```
 
-3. **Launch a game:**
-   - Navigate to any GitHub repository page
-   - Click the 🎮 extension icon
-   - Click "Launch Game"
-   - Game automatically opens when ready!
+2. Run the setup script:
+   ```bash
+   sudo bash scripts/postinstall
+   ```
 
-### Method 2: Desktop App
+## Setup (After Installation):
 
-1. Double-click **GameLauncher.app**
-2. Paste the GitHub repository URL
-3. Click "Launch"
+### 1. GitHub Authentication
 
-### Method 3: Command Line
-
+Open Terminal and run:
 ```bash
-# Launch with full URL
-run-game https://github.com/user/repo/tree/branch-name
-
-# Or just the repo URL (uses main branch)
-run-game https://github.com/user/repo
-```
-
-## 📖 Examples
-
-```bash
-# Launch a specific branch
-run-game https://github.com/sett-backend/arrow_1_classic_gameplay/tree/T1009-SP1-1fb0f
-
-# Launch from main branch
-run-game https://github.com/sett-backend/domino_legends_1_jamaica
-
-# The URL from GitHub's address bar works too
-run-game https://github.com/user/repo/tree/feature-branch
-```
-
-## 🔧 How It Works
-
-1. **URL Parsing**: Extracts repository info and branch from GitHub URL
-2. **Clone/Update**: Uses GitHub CLI to clone or update the repository
-3. **Dependencies**: Runs `npm install` automatically
-4. **Dev Server**: Starts `npm run dev`
-5. **Smart Opening**: Polls localhost:3000 until webpack finishes compiling
-6. **Browser Launch**: Opens the game only when it's actually ready
-
-## 📁 Project Structure
-
-```
-GitHubGameLauncher/
-├── scripts/
-│   ├── run-github-game.sh      # Main launcher script
-│   └── run-game-service.js     # Background service for Chrome extension
-├── chrome-extension/
-│   ├── manifest.json           # Extension configuration
-│   ├── popup.html              # Extension popup UI
-│   ├── popup.js                # Popup logic
-│   └── background.js           # Background service worker
-├── app/
-│   └── GameLauncher.app        # macOS desktop application
-└── README.md
-```
-
-## 🛠️ Development
-
-### Building from Source
-
-```bash
-# Clone the repository
-git clone https://github.com/ilanlenzner-design/GitHubGameLauncher.git
-cd GitHubGameLauncher
-
-# Make scripts executable
-chmod +x scripts/*.sh
-
-# Test the launcher
-./scripts/run-github-game.sh https://github.com/user/test-repo
-```
-
-### Creating the .pkg Installer
-
-```bash
-# Build the installer package
-./build-installer.sh
-```
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📝 Requirements
-
-The launcher works with games that have:
-- `package.json` with dependencies
-- `npm run dev` command that starts a dev server
-- Server running on `localhost:3000`
-
-## 🐛 Troubleshooting
-
-**"gh: command not found"**
-```bash
-brew install gh
 gh auth login
 ```
 
-**Chrome extension shows "Error: Make sure the launcher service is running"**
+Follow the prompts to authenticate with GitHub.
+
+### 2. Install Chrome Extension
+
+The Chrome extension files are installed at `~/game-launcher-extension`
+
+1. Open Chrome and go to `chrome://extensions/`
+2. Enable **Developer mode** (toggle in top right)
+3. Click **Load unpacked**
+4. Select the folder: `~/game-launcher-extension`
+5. The extension will appear with a 🎮 icon in your toolbar
+
+### 3. Start the Service (for Chrome Extension)
+
+Open Terminal and run:
 ```bash
 node ~/run-game-service.js
 ```
 
-**Port 3000 already in use**
-- Stop any running dev servers
-- Or modify the port in the game's configuration
+Keep this terminal window open while using the Chrome extension.
 
-**npm install fails**
-- Ensure you have Node.js installed
-- Check GitHub authentication: `gh auth status`
+## How to Use:
 
-## 📄 License
+### Method 1: Chrome Extension (Easiest)
 
-MIT License - feel free to use this for your own projects!
+1. Make sure the service is running (`node ~/run-game-service.js`)
+2. Go to any GitHub repository page
+3. Click the 🎮 icon in your Chrome toolbar
+4. Click "Launch Game"
+5. Game opens automatically when ready!
 
-## 🙏 Acknowledgments
+### Method 2: Desktop App
 
-- Built for the Sett game development team
-- Uses GitHub CLI for authentication
-- Powered by Node.js and Chrome Extensions API
+1. Double-click **GameLauncher** on your Desktop
+2. Paste the GitHub repository URL
+3. Click "Launch"
+4. Game starts in Terminal!
 
-## 💡 Future Ideas
+### Method 3: Command Line
 
-- [ ] Support for other ports besides 3000
-- [ ] Support for games using different package managers (yarn, pnpm)
-- [ ] Safari extension support
-- [ ] Windows and Linux support
-- [ ] Built-in game library/favorites
+```bash
+run-game https://github.com/user/repo/tree/branch-name
+```
 
----
+## Examples:
 
-Made with ❤️ for game developers
+```bash
+# Launch a game with full URL
+run-game https://github.com/sett-backend/arrow_1_classic_gameplay/tree/T1009-SP1-1fb0f
 
-**Star ⭐ this repo if you find it useful!**
+# Or just the repo (uses main branch)
+run-game https://github.com/user/some-game
+```
+
+## Features:
+
+- ✅ **One-click launch** from GitHub pages
+- ✅ **Automatic dependency installation**
+- ✅ **Smart waiting** - opens browser only when webpack is ready
+- ✅ **Works with private repos** (uses your GitHub auth)
+- ✅ **Multiple launch methods** - choose what works best for you
+
+## Troubleshooting:
+
+**"gh: command not found"**
+- Install GitHub CLI: `brew install gh`
+
+**Chrome extension shows error**
+- Make sure the service is running: `node ~/run-game-service.js`
+- Check that port 3001 is not in use
+
+**Game doesn't open**
+- Check Terminal for error messages
+- Ensure you have npm installed
+- Verify GitHub authentication: `gh auth status`
+
+## Uninstall:
+
+```bash
+sudo rm /usr/local/bin/run-github-game.sh
+sudo rm /usr/local/bin/run-game-service.js
+sudo rm -rf /Applications/GameLauncher.app
+rm -rf ~/game-launcher-extension
+```
+
+Remove the alias from `~/.zshrc`:
+```bash
+# Remove this line:
+alias run-game='~/run-github-game.sh'
+```
+
+## Support:
+
+For issues or questions, contact the developer or check the documentation.
+
+Enjoy launching games! 🎮🚀
