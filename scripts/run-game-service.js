@@ -27,8 +27,14 @@ const server = http.createServer((req, res) => {
 
         console.log(`\n🎮 Launching game: ${gameUrl}`);
 
-        // Execute the run-github-game script
-        const command = `osascript -e 'tell application "Terminal" to do script "cd ~ && ~/run-github-game.sh '"'"'${gameUrl}'"'"'"'`;
+        // Execute the run-github-game script - reuse existing Terminal window
+        const command = `osascript -e 'tell application "Terminal"
+            if (count of windows) > 0 then
+                do script "cd ~ && ~/run-github-game.sh '"'"'${gameUrl}'"'"'" in front window
+            else
+                do script "cd ~ && ~/run-github-game.sh '"'"'${gameUrl}'"'"'"
+            end if
+        end tell'`;
 
         exec(command, (error) => {
             if (error) {
